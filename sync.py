@@ -4,7 +4,7 @@ from datetime import datetime
 
 # ===== 需修改的配置 =====
 DATA_SOURCE = "F:\CUDA\0Computer316\CuData\FiveM-MODE\15%"      # 替换为您的数据文件夹路径（如"C:/Users/Name/data"）
-GIT_REPO = "F:\CUDA\0Kaggle\Github\Git"        # 替换为GitHub仓库本地路径（如"C:/my-kaggle-data"）
+GIT_REPO = "C:\Users\Adminstractor\-my-kaggle-data"        # 替换为GitHub仓库本地路径（如"C:/my-kaggle-data"）
 # ======================
 
 def sync_to_github():
