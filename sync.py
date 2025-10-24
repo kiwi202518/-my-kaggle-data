@@ -2,15 +2,15 @@
 import os, shutil, subprocess
 from datetime import datetime
 
-# ===== 需修改的配置 =====
-DATA_SOURCE = "F:\CUDA\0Kaggle\KaggleData"      # 替换为您的数据文件夹路径（如"C:/Users/Name/data"）
-GIT_REPO = "C:\Users\Adminstractor\-my-kaggle-data"        # 替换为GitHub仓库本地路径（如"C:/my-kaggle-data"）
+# ===== 配置参数 =====
+DATA_SOURCE = "F:/CUDA/0Kaggle/KaggleData"  # 您的.mtsd数据文件夹
+GIT_REPO = "C:/Users/Adminstractor/-my-kaggle-data"  # GitHub仓库路径
 # ======================
 
 def sync_to_github():
-    print("🔄 开始同步数据到GitHub...")
+    print("🔄 开始同步.mtsd数据到GitHub...")
     
-    # 1. 清空仓库（保留.git和README.md）
+    # 1. 清空仓库（保留必要文件）
     for item in os.listdir(GIT_REPO):
         if item not in ['.git', 'README.md', '.gitignore', 'sync.py']:
             path = os.path.join(GIT_REPO, item)
@@ -19,20 +19,23 @@ def sync_to_github():
             else:
                 os.remove(path)
     
-    # 2. 复制新数据到仓库
-    for file in os.listdir(DATA_SOURCE):
+    # 2. 复制所有.mtsd文件到仓库
+    mtsd_files = [f for f in os.listdir(DATA_SOURCE) if f.endswith('.mtsd')]
+    print(f"📁 找到 {len(mtsd_files)} 个.mtsd文件")
+    
+    for file in mtsd_files:
         src = os.path.join(DATA_SOURCE, file)
         dst = os.path.join(GIT_REPO, file)
-        if os.path.isfile(src):  # 只复制文件，忽略子目录
-            shutil.copy2(src, dst)
+        shutil.copy2(src, dst)
+        print(f"✅ 已复制: {file}")
     
     # 3. 提交到GitHub
     os.chdir(GIT_REPO)
     subprocess.run(["git", "add", "."])
-    subprocess.run(["git", "commit", "-m", f"Update: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"])
+    subprocess.run(["git", "commit", "-m", f"Update MTSD data: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"])
     subprocess.run(["git", "push"])
     
-    print("✅ 同步完成！")
+    print("✅ .mtsd数据同步完成！")
 
 if __name__ == "__main__":
     sync_to_github()
